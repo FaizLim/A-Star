@@ -7,6 +7,24 @@ def find_common(word_1, word_2): #find no of common letters at respective places
             count += 1
     return count
 
+def swap(string, i, j):  #string -> list, make the swap, list -> string
+    lst = []
+    lst[:0] = string
+    tmp = lst[i]
+    lst[i] = lst[j]
+    lst[j] = tmp
+    new_string = ""
+    for letter in lst:
+        new_string += letter
+    return str(new_string)
+
+def recursive_swap(string):  #swaps recursively, returns list of results
+    results = []
+    for i in range(len(string)-1):
+        for j in range(i+1, len(string),):
+            results.append(swap(string, i, j))
+    return results
+
 def rearrange(word, target): #main A* function
 
     #trivial cases:
@@ -24,22 +42,13 @@ def rearrange(word, target): #main A* function
 
         # add vertices for 1 swap
         swapping_word = word_vertex.value #temp var for word
-        for i in range(len(swapping_word)):
-            for j in range(i+1, len(swapping_word)-1,):
-                #make 1 swap per cycle for each letter
-                start = swapping_word[:i]
-                mid = swapping_word[i+1:j]
-                end = swapping_word[j:]
-                if i+1 != j:
-                    tmp_word = start + swapping_word[i] + mid + swapping_word[j] + end
-                else:
-                    tmp_word = swapping_word[:i+1] + swapping_word[j] + swapping_word[i] + swapping_word[j+1:]
+        list_of_vertices = recursive_swap(swapping_word)
 
-                print(tmp_word)
-
-                tmp_word_vertex = GV.Vertex(tmp_word)
-                word_map.add_vertex(tmp_word_vertex)
-                word_map.add_edge(word_vertex, tmp_word_vertex)
+        for element in list_of_vertices:
+            print(element)
+            new_vertex = GV.Vertex(element)
+            word_map.add_vertex(new_vertex)
+            word_map.add_edge(word_vertex, new_vertex)
         word_map.print_graph()
 
         # compare swap results with target (find _common)
