@@ -26,12 +26,12 @@ def recursive_swap(string):  #swaps recursively, returns list of results
     return results
 
 def rearrange(word, target): #main A* function
-
+    x = 0
     #trivial cases:
     if word == target:
-        return 0
+        pass
     elif len(word) == 2:
-        return 1
+        x = 1
 
     #non-trivial cases
     else:
@@ -41,26 +41,40 @@ def rearrange(word, target): #main A* function
         word_map.add_vertex(word_vertex) #Head vertex created - stores original
 
         # add vertices for 1 swap
-        swapping_word = word_vertex.value #temp var for word
+        swapping_word = word_vertex.value
         list_of_vertices = recursive_swap(swapping_word)
 
-        for element in list_of_vertices:
+        for element in list_of_vertices:  #adds every swapped string to graph
             print(element)
             new_vertex = GV.Vertex(element)
             word_map.add_vertex(new_vertex)
             word_map.add_edge(word_vertex, new_vertex)
-        word_map.print_graph()
 
+        word_map.print_graph() #confirmation of results
+
+        if target in word_map.graph_dict.keys():
+            x += 1
+        else:
         # compare swap results with target (find _common)
-        """
-        occurrence = []
-        for edge in word_vertex.get_edges()
-        """
+            occurrences = list_of_vertices
+            best = []
+            max = 0
+            for occ in occurrences:
+                num = find_common(occ, target)
+                if max > num:
+                    pass
+                elif max == num:
+                    best.append(occ)
+                else:
+                    max = num
+                    best = [occ]
+            print(best)
+            # repeat on swapped results with highest find_common count
+            for outcome in best:
+                # repeat all till 1 swap result == target
+                x += rearrange(outcome, target)
 
-        # repeat on swapped results with highest find_common count
-        #repeat all till 1 swap result == target
-
-        return #(no of swaps)
+    return x
 
 word = input("Type your word (jumbled): ")
 target = input("Type your target: ")
