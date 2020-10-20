@@ -1,6 +1,6 @@
 import Graph_Vertex as GV
 
-def find_common(word_1, word_2): #find no of common letters at respective places
+def find_common(word_1, word_2): #find no of common letters at respective places, assume len(word_1) = len(word_2)
     count = 0
     for i in range(len(word_1)):
         if word_1[i] == word_2[i]:
@@ -8,9 +8,14 @@ def find_common(word_1, word_2): #find no of common letters at respective places
     return count
 
 def rearrange(word, target): #main A* function
+
+    #trivial cases:
     if word == target:
-        print("Done! ")
-        return
+        return 0
+    elif len(word) == 2:
+        return 1
+
+    #non-trivial cases
     else:
         word_vertex = GV.Vertex(word)
         target_vertex = GV.Vertex(target)
@@ -19,14 +24,14 @@ def rearrange(word, target): #main A* function
 
         # add vertices for 1 swap
         swapping_word = word_vertex.value #temp var for word
-        for i in range(len(swapping_word)-1):
+        for i in range(len(swapping_word)):
             for j in range(len(swapping_word)):
-                j =+ 1
-                tmp_word = swapping_word
+                j += 1
                 #make 1 swap per cycle for each letter
-                tmp = tmp_word[i]
-                tmp_word[i] = tmp_word[j]
-                tmp_word[j] = tmp
+                if i+1 is not j:
+                    tmp_word = swapping_word[:i] + swapping_word[j] + swapping_word[i+1:j] + swapping_word[i] + swapping_word[j+1:]
+                else:
+                    tmp_word = swapping_word[:i+1] + swapping_word[j] + swapping_word[i] + swapping_word[j+1:]
                 print(tmp_word)
 
                 tmp_word_vertex = GV.Vertex(tmp_word)
@@ -47,7 +52,9 @@ def rearrange(word, target): #main A* function
 
 word = input("Type your word (jumbled): ")
 target = input("Type your target: ")
-rearrange(word, target)
+num = str(rearrange(word, target))
+print("Done!")
+print("Least no. of swaps = " + num)
 
 
 
