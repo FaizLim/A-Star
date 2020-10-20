@@ -25,13 +25,16 @@ def rearrange(word, target): #main A* function
         # add vertices for 1 swap
         swapping_word = word_vertex.value #temp var for word
         for i in range(len(swapping_word)):
-            for j in range(len(swapping_word)):
-                j += 1
+            for j in range(i+1, len(swapping_word)-1,):
                 #make 1 swap per cycle for each letter
-                if i+1 is not j:
-                    tmp_word = swapping_word[:i] + swapping_word[j] + swapping_word[i+1:j] + swapping_word[i] + swapping_word[j+1:]
+                start = swapping_word[:i]
+                mid = swapping_word[i+1:j]
+                end = swapping_word[j:]
+                if i+1 != j:
+                    tmp_word = start + swapping_word[i] + mid + swapping_word[j] + end
                 else:
                     tmp_word = swapping_word[:i+1] + swapping_word[j] + swapping_word[i] + swapping_word[j+1:]
+
                 print(tmp_word)
 
                 tmp_word_vertex = GV.Vertex(tmp_word)
@@ -48,7 +51,7 @@ def rearrange(word, target): #main A* function
         # repeat on swapped results with highest find_common count
         #repeat all till 1 swap result == target
 
-        return
+        return #(no of swaps)
 
 word = input("Type your word (jumbled): ")
 target = input("Type your target: ")
