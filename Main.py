@@ -18,7 +18,7 @@ def swap(string, i, j):  #string -> list, make the swap, list -> string
         new_string += letter
     return str(new_string)
 
-def recursive_swap(string):  #swaps recursively, returns list of results
+def recursive_swap(string):  #swaps with double loop, covers all combinations
     results = []
     for i in range(len(string)-1):
         for j in range(i+1, len(string),):
@@ -26,6 +26,7 @@ def recursive_swap(string):  #swaps recursively, returns list of results
     return results
 
 def rearrange(word, target, x = 0): #main A* function
+    print(word)
     #trivial cases:
     if word == target:
         pass
@@ -48,7 +49,7 @@ def rearrange(word, target, x = 0): #main A* function
             word_map.add_vertex(new_vertex)
             word_map.add_edge(word_vertex, new_vertex)
 
-        word_map.print_graph() #confirmation of results
+        #word_map.print_graph()            #confirmation of results
 
         if target in word_map.graph_dict.keys():
             x += 1
@@ -66,7 +67,9 @@ def rearrange(word, target, x = 0): #main A* function
                 else:
                     max = num
                     best = [occ]
-            print(best)
+            #print(best)                 #best now stores the list with most common letters
+            #This implementation is from the distance measuring component of A* (direction)
+
             # repeat on swapped results with highest find_common count
             min_x = 99999
             for outcome in best:
@@ -76,7 +79,7 @@ def rearrange(word, target, x = 0): #main A* function
                     pass
                 else:
                     min_x = num
-            x += min_x
+            x += min_x #only shortest path is taken into account
 
     return x
 
