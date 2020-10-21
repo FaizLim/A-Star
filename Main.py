@@ -25,8 +25,7 @@ def recursive_swap(string):  #swaps recursively, returns list of results
             results.append(swap(string, i, j))
     return results
 
-def rearrange(word, target): #main A* function
-    x = 0
+def rearrange(word, target, x = 0): #main A* function
     #trivial cases:
     if word == target:
         pass
@@ -45,7 +44,6 @@ def rearrange(word, target): #main A* function
         list_of_vertices = recursive_swap(swapping_word)
 
         for element in list_of_vertices:  #adds every swapped string to graph
-            print(element)
             new_vertex = GV.Vertex(element)
             word_map.add_vertex(new_vertex)
             word_map.add_edge(word_vertex, new_vertex)
@@ -70,9 +68,15 @@ def rearrange(word, target): #main A* function
                     best = [occ]
             print(best)
             # repeat on swapped results with highest find_common count
+            min_x = 99999
             for outcome in best:
                 # repeat all till 1 swap result == target
-                x += rearrange(outcome, target)
+                num = rearrange(outcome, target, x + 1)
+                if min_x < num:
+                    pass
+                else:
+                    min_x = num
+            x += min_x
 
     return x
 
