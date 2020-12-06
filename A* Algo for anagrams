@@ -4,14 +4,7 @@ from queue import PriorityQueue
 
 class State(object):
 
-    '''
-    
-
-    Steps:
-    1) Generate a list of all possible next Steps toward goal from current position
-    2) Store Children in PriorityQueue based on distance to goal, closest first
-    3) Select closest child and Repeat until goal reached or no more Children
-    '''
+  
 
     def __init__(self, value, parent,
                  start = 0,
